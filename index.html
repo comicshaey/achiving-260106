@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>기록 아카이브</title>
+  <meta name="description" content="업무/건강/창작/개발 기록을 한 곳에 모으는 개인 아카이브" />
+  <link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- 좌측 내비 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand__title">기록 아카이브</div>
+        <div class="brand__sub">공적·사적·창작·개발 통합</div>
+      </div>
+
+      <div class="controls">
+        <input id="q" class="input" type="search" placeholder="검색 (제목/본문/태그)" autocomplete="off" />
+        <div class="row">
+          <select id="scope" class="select" title="영역 필터">
+            <option value="all">전체</option>
+            <option value="public">업무(공적)</option>
+            <option value="health">건강관리</option>
+            <option value="creative">창작</option>
+            <option value="dev">개발</option>
+          </select>
+          <select id="sort" class="select" title="정렬">
+            <option value="new">최신순</option>
+            <option value="old">오래된순</option>
+            <option value="title">제목순</option>
+          </select>
+        </div>
+
+        <div class="chips" id="tagChips"></div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav__link" href="#/">홈</a>
+        <a class="nav__link" href="#/timeline">타임라인</a>
+        <a class="nav__link" href="#/about">운영 원칙</a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="muted">정적 페이지 · GitHub Pages</div>
+        <button id="toggleTheme" class="btn btn--ghost" type="button">테마</button>
+      </div>
+    </aside>
+
+    <!-- 우측 본문 -->
+    <main class="main">
+      <header class="topbar">
+        <button id="toggleSidebar" class="btn btn--ghost" type="button">☰</button>
+        <div class="topbar__title" id="viewTitle">홈</div>
+        <div class="topbar__right">
+          <a class="btn btn--ghost" href="#/new">작성 가이드</a>
+        </div>
+      </header>
+
+      <section class="content" id="view">
+        <!-- JS가 렌더링 -->
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
