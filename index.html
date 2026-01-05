@@ -4,66 +4,133 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>기록 아카이브</title>
-  <meta name="description" content="업무/건강/창작/개발 기록을 한 곳에 모으는 개인 아카이브" />
-  <link rel="stylesheet" href="assets/app.css" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <div class="app">
-    <!-- 좌측 내비 -->
-    <aside class="sidebar" id="sidebar">
+  <header class="topbar">
+    <div class="container">
       <div class="brand">
         <div class="brand__title">기록 아카이브</div>
-        <div class="brand__sub">공적·사적·창작·개발 통합</div>
+        <div class="brand__sub">창작 · 일상 · 업무 · 기타 기록을 한 곳에</div>
       </div>
 
-      <div class="controls">
-        <input id="q" class="input" type="search" placeholder="검색 (제목/본문/태그)" autocomplete="off" />
-        <div class="row">
-          <select id="scope" class="select" title="영역 필터">
+      <div class="topbar__actions">
+        <button id="btnNew" class="btn btn-primary" type="button">+ 새 기록</button>
+        <button id="btnExport" class="btn" type="button">내보내기(JSON)</button>
+        <label class="btn file-btn">
+          가져오기(JSON)
+          <input id="importFile" type="file" accept="application/json" hidden />
+        </label>
+        <button id="btnClearAll" class="btn btn-danger" type="button">전체삭제</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 필터/검색 -->
+    <section class="panel">
+      <div class="filters">
+        <div class="field">
+          <label class="label" for="q">검색</label>
+          <input id="q" class="input" type="search" placeholder="제목/내용/태그로 검색" />
+        </div>
+
+        <div class="field">
+          <label class="label" for="category">카테고리</label>
+          <select id="category" class="select">
             <option value="all">전체</option>
-            <option value="public">업무(공적)</option>
-            <option value="health">건강관리</option>
             <option value="creative">창작</option>
-            <option value="dev">개발</option>
+            <option value="work">업무</option>
+            <option value="daily">일상</option>
+            <option value="etc">기타</option>
           </select>
-          <select id="sort" class="select" title="정렬">
+        </div>
+
+        <div class="field">
+          <label class="label" for="sort">정렬</label>
+          <select id="sort" class="select">
             <option value="new">최신순</option>
             <option value="old">오래된순</option>
-            <option value="title">제목순</option>
           </select>
         </div>
 
-        <div class="chips" id="tagChips"></div>
-      </div>
-
-      <nav class="nav">
-        <a class="nav__link" href="#/">홈</a>
-        <a class="nav__link" href="#/timeline">타임라인</a>
-        <a class="nav__link" href="#/about">운영 원칙</a>
-      </nav>
-
-      <div class="sidebar__footer">
-        <div class="muted">정적 페이지 · GitHub Pages</div>
-        <button id="toggleTheme" class="btn btn--ghost" type="button">테마</button>
-      </div>
-    </aside>
-
-    <!-- 우측 본문 -->
-    <main class="main">
-      <header class="topbar">
-        <button id="toggleSidebar" class="btn btn--ghost" type="button">☰</button>
-        <div class="topbar__title" id="viewTitle">홈</div>
-        <div class="topbar__right">
-          <a class="btn btn--ghost" href="#/new">작성 가이드</a>
+        <div class="field field-right">
+          <label class="label">요약</label>
+          <div id="summary" class="summary">0건</div>
         </div>
-      </header>
+      </div>
+    </section>
 
-      <section class="content" id="view">
-        <!-- JS가 렌더링 -->
-      </section>
-    </main>
-  </div>
+    <!-- 리스트 -->
+    <section class="list">
+      <div id="empty" class="empty hidden">
+        아직 기록이 없습니다. 상단의 <b>+ 새 기록</b> 버튼으로 시작하세요.
+      </div>
+      <div id="cards" class="cards"></div>
+    </section>
+  </main>
 
-  <script src="assets/app.js"></script>
+  <!-- 모달: 등록/수정 -->
+  <dialog id="modal" class="modal">
+    <form id="form" class="modal__body" method="dialog">
+      <div class="modal__head">
+        <div class="modal__title" id="modalTitle">새 기록</div>
+        <button class="iconbtn" type="button" id="btnClose" aria-label="닫기">✕</button>
+      </div>
+
+      <input type="hidden" id="editingId" value="" />
+
+      <div class="grid2">
+        <div class="field">
+          <label class="label" for="title">제목</label>
+          <input id="title" class="input" type="text" placeholder="예) 2026-01-04 회계말 체크" required />
+        </div>
+
+        <div class="field">
+          <label class="label" for="date">날짜</label>
+          <input id="date" class="input" type="date" />
+        </div>
+
+        <div class="field">
+          <label class="label" for="type">카테고리</label>
+          <select id="type" class="select">
+            <option value="creative">창작</option>
+            <option value="work">업무</option>
+            <option value="daily">일상</option>
+            <option value="etc">기타</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="label" for="tags">태그(쉼표 구분)</label>
+          <input id="tags" class="input" type="text" placeholder="예) 에세이, 기면병, 회계말" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="content">내용(텍스트)</label>
+        <textarea id="content" class="textarea" rows="10" placeholder="메모/에세이/업무로그 등"></textarea>
+        <div class="hint">* 에세이는 여기 붙여넣고 저장하면 됨. (긴 글도 OK)</div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="images">만화/이미지 파일(선택 · 여러 장 가능)</label>
+        <input id="images" class="input" type="file" accept="image/*" multiple />
+        <div class="hint">
+          * 정적 페이지라 “업로드”가 아니라 브라우저에 저장하는 방식임. 너무 큰 이미지는 저장이 안 될 수 있음.
+        </div>
+        <div id="preview" class="preview"></div>
+      </div>
+
+      <div class="modal__foot">
+        <button id="btnDelete" class="btn btn-danger hidden" type="button">삭제</button>
+        <div class="spacer"></div>
+        <button class="btn" type="button" id="btnCancel">취소</button>
+        <button class="btn btn-primary" type="submit">저장</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="./app.js"></script>
 </body>
 </html>
