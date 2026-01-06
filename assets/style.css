@@ -240,3 +240,35 @@ code{
   border-radius: 8px;
   font-size: 12px;
 }
+
+
+/* 계산기 호환용(시범 모듈) */
+.grid.two{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+}
+@media (max-width: 860px){
+  .grid.two{ grid-template-columns: 1fr; }
+}
+
+.simple-table{
+  width:100%;
+  border-collapse: collapse;
+}
+.simple-table th,
+.simple-table td{
+  border-top: 1px solid rgba(0,0,0,.10);
+  padding: 10px 8px;
+  vertical-align: top;
+}
+.simple-table th{
+  text-align:left;
+  color:#222;
+  width: 52%;
+  font-weight: 700;
+}
+.simple-table td{
+  text-align:right;
+  white-space: nowrap;
+}
