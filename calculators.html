@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>계산기</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">계산기</div>
+        <div class="brand__sub">업무 계산기 모듈 추가 예정</div>
+      </div>
+      <nav class="nav">
+        <a class="nav__link" href="./index.html">홈</a>
+        <a class="nav__link" href="./archive.html">기록관</a>
+        <a class="nav__link" href="./work.html">업무보조</a>
+        <a class="nav__link is-active" href="./calculators.html">계산기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <h2 class="panel__title">계산기 모듈</h2>
+      <p class="muted">
+        여기에는 추후 보내줄 계산기 코드(HTML/JS)를 붙여서 모듈 형태로 확장할 예정입니다.
+      </p>
+
+      <div class="card subtle">
+        <div class="card__title">추가 방식</div>
+        <div class="card__desc">
+          1) 계산기별 섹션(폼+결과) 추가<br/>
+          2) 공통 UI는 style.css 그대로 사용<br/>
+          3) 계산기 JS는 assets/calculators-xxx.js 형태로 분리 권장
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span class="muted">화이트 테마 고정</span>
+    </div>
+  </footer>
+
+  <script src="./assets/common.js"></script>
+</body>
+</html>
