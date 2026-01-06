@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>업무보조 달력</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+
+  <!-- FullCalendar (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__title">업무보조</div>
+        <div class="brand__sub">월간 · 주간 · 오늘/내일(2일) 일정</div>
+      </div>
+      <nav class="nav">
+        <a class="nav__link" href="./index.html">홈</a>
+        <a class="nav__link" href="./archive.html">기록관</a>
+        <a class="nav__link is-active" href="./work.html">업무보조</a>
+        <a class="nav__link" href="./calculators.html">계산기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <div class="panel__header">
+        <h2 class="panel__title">업무 일정 달력</h2>
+        <div class="panel__actions">
+          <button class="btn btn--primary" id="btnNewEvent">일정 추가</button>
+          <button class="btn" id="btnCalExport">내보내기(JSON)</button>
+          <label class="btn btn--ghost">
+            가져오기
+            <input type="file" id="fileCalImport" accept="application/json" hidden />
+          </label>
+          <button class="btn btn--danger" id="btnCalClear">전체 삭제</button>
+        </div>
+      </div>
+
+      <div class="hint">
+        <b>사용 팁:</b> 달력에서 날짜/시간을 드래그하면 빠르게 일정 추가가 가능합니다.
+        일정 클릭 시 수정/삭제가 가능합니다.
+      </div>
+
+      <div id="calendar" class="calendar"></div>
+    </section>
+
+    <!-- 일정 입력/수정 모달 -->
+    <div class="modal" id="eventModal" aria-hidden="true">
+      <div class="modal__backdrop" data-close="1"></div>
+      <div class="modal__card" role="dialog" aria-modal="true">
+        <div class="modal__header">
+          <div class="modal__title" id="modalTitle">일정 추가</div>
+          <button class="iconbtn" data-close="1" aria-label="닫기">✕</button>
+        </div>
+
+        <form id="eventForm" class="form form--compact">
+          <input type="hidden" id="evtId" />
+
+          <div class="form__row">
+            <label class="label">제목</label>
+            <input class="input" type="text" id="evtTitle" required />
+          </div>
+
+          <div class="form__row">
+            <label class="label">시작</label>
+            <input class="input" type="datetime-local" id="evtStart" required />
+          </div>
+
+          <div class="form__row">
+            <label class="label">종료</label>
+            <input class="input" type="datetime-local" id="evtEnd" />
+            <div class="muted small">종료가 비어있으면 30분 일정으로 저장됩니다.</div>
+          </div>
+
+          <div class="form__row">
+            <label class="label">메모</label>
+            <textarea class="textarea" id="evtMemo" rows="3"></textarea>
+          </div>
+
+          <div class="form__row form__row--end gap">
+            <button class="btn btn--ghost" type="button" id="btnDeleteEvent">삭제</button>
+            <button class="btn btn--primary" type="submit">저장</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span class="muted">일정 데이터: 브라우저 localStorage</span>
+    </div>
+  </footer>
+
+  <script src="./assets/common.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+  <script src="./assets/calendar.js"></script>
+</body>
+</html>
