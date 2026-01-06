@@ -2,136 +2,60 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>기록 아카이브</title>
-  <link rel="stylesheet" href="static/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>기록관 + 업무보조</title>
+  <link rel="stylesheet" href="./assets/style.css" />
 </head>
 <body>
   <header class="topbar">
-    <div class="container">
+    <div class="wrap topbar__inner">
       <div class="brand">
-        <div class="brand__title">기록 아카이브</div>
-        <div class="brand__sub">창작 · 일상 · 업무 · 기타 기록을 한 곳에</div>
+        <div class="brand__title">아카이빙 기록관</div>
+        <div class="brand__sub">기록 · 컨디션 · 업무 보조 (화이트 고정)</div>
       </div>
-
-      <div class="topbar__actions">
-        <button id="btnNew" class="btn btn-primary" type="button">+ 새 기록</button>
-        <button id="btnExport" class="btn" type="button">내보내기(JSON)</button>
-        <label class="btn file-btn">
-          가져오기(JSON)
-          <input id="importFile" type="file" accept="application/json" hidden />
-        </label>
-        <button id="btnClearAll" class="btn btn-danger" type="button">전체삭제</button>
-      </div>
+      <nav class="nav">
+        <a class="nav__link" href="./archive.html">기록관</a>
+        <a class="nav__link" href="./work.html">업무보조(달력)</a>
+        <a class="nav__link" href="./calculators.html">계산기</a>
+      </nav>
     </div>
   </header>
 
-  <main class="container">
-    <!-- 필터/검색 -->
-    <section class="panel">
-      <div class="filters">
-        <div class="field">
-          <label class="label" for="q">검색</label>
-          <input id="q" class="input" type="search" placeholder="제목/내용/태그로 검색" />
-        </div>
+  <main class="wrap">
+    <section class="hero">
+      <h1 class="hero__title">내 기록과 업무를 한 화면에서.</h1>
+      <p class="hero__desc">
+        기록관은 날짜/태그로 정렬되고, 업무보조는 월간·주간·(오늘/내일) 2일 일정으로 운영합니다.
+        서버 없이 웹호스팅으로 먼저 돌리기 위해 데이터는 브라우저에 저장됩니다.
+      </p>
 
-        <div class="field">
-          <label class="label" for="category">카테고리</label>
-          <select id="category" class="select">
-            <option value="all">전체</option>
-            <option value="creative">창작</option>
-            <option value="work">업무</option>
-            <option value="daily">일상</option>
-            <option value="etc">기타</option>
-          </select>
-        </div>
+      <div class="grid2">
+        <a class="card" href="./archive.html">
+          <div class="card__title">기록관</div>
+          <div class="card__desc">컨텐츠 감상 · 개발 학습 · 일상 로그를 날짜/태그로 조회</div>
+          <div class="card__meta">기능: 기록 추가, 태그 필터, JSON 내보내기/가져오기</div>
+        </a>
 
-        <div class="field">
-          <label class="label" for="sort">정렬</label>
-          <select id="sort" class="select">
-            <option value="new">최신순</option>
-            <option value="old">오래된순</option>
-          </select>
-        </div>
-
-        <div class="field field-right">
-          <label class="label">요약</label>
-          <div id="summary" class="summary">0건</div>
-        </div>
+        <a class="card" href="./work.html">
+          <div class="card__title">업무보조</div>
+          <div class="card__desc">업무 일정 달력 (월간/주간/오늘·내일 2일)</div>
+          <div class="card__meta">기능: 일정 추가, 수정/삭제, 로컬 저장, JSON 백업</div>
+        </a>
       </div>
-    </section>
 
-    <!-- 리스트 -->
-    <section class="list">
-      <div id="empty" class="empty hidden">
-        아직 기록이 없습니다. 상단의 <b>+ 새 기록</b> 버튼으로 시작하세요.
+      <div class="notice">
+        <strong>주의:</strong> localStorage 저장이라 같은 기기/브라우저에서만 유지됩니다.
+        다른 PC로 옮기려면 각 화면의 <b>내보내기(JSON)</b>로 백업 후 <b>가져오기</b>로 복원하세요.
       </div>
-      <div id="cards" class="cards"></div>
     </section>
   </main>
 
-  <!-- 모달: 등록/수정 -->
-  <dialog id="modal" class="modal">
-    <form id="form" class="modal__body" method="dialog">
-      <div class="modal__head">
-        <div class="modal__title" id="modalTitle">새 기록</div>
-        <button class="iconbtn" type="button" id="btnClose" aria-label="닫기">✕</button>
-      </div>
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span class="muted">© 개인 기록 인프라 (정적 웹호스팅 MVP)</span>
+    </div>
+  </footer>
 
-      <input type="hidden" id="editingId" value="" />
-
-      <div class="grid2">
-        <div class="field">
-          <label class="label" for="title">제목</label>
-          <input id="title" class="input" type="text" placeholder="예) 2026-01-04 회계말 체크" required />
-        </div>
-
-        <div class="field">
-          <label class="label" for="date">날짜</label>
-          <input id="date" class="input" type="date" />
-        </div>
-
-        <div class="field">
-          <label class="label" for="type">카테고리</label>
-          <select id="type" class="select">
-            <option value="creative">창작</option>
-            <option value="work">업무</option>
-            <option value="daily">일상</option>
-            <option value="etc">기타</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label class="label" for="tags">태그(쉼표 구분)</label>
-          <input id="tags" class="input" type="text" placeholder="예) 에세이, 기면병, 회계말" />
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="label" for="content">내용(텍스트)</label>
-        <textarea id="content" class="textarea" rows="10" placeholder="메모/에세이/업무로그 등"></textarea>
-        <div class="hint">* 에세이는 여기 붙여넣고 저장하면 됨. (긴 글도 OK)</div>
-      </div>
-
-      <div class="field">
-        <label class="label" for="images">만화/이미지 파일(선택 · 여러 장 가능)</label>
-        <input id="images" class="input" type="file" accept="image/*" multiple />
-        <div class="hint">
-          * 정적 페이지라 “업로드”가 아니라 브라우저에 저장하는 방식임. 너무 큰 이미지는 저장이 안 될 수 있음.
-        </div>
-        <div id="preview" class="preview"></div>
-      </div>
-
-      <div class="modal__foot">
-        <button id="btnDelete" class="btn btn-danger hidden" type="button">삭제</button>
-        <div class="spacer"></div>
-        <button class="btn" type="button" id="btnCancel">취소</button>
-        <button class="btn btn-primary" type="submit">저장</button>
-      </div>
-    </form>
-  </dialog>
-
-  <script src="static/app.js"></script>
+  <script src="./assets/common.js"></script>
 </body>
 </html>
-
